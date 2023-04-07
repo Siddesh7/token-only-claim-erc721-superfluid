@@ -1,0 +1,23 @@
+{
+  "name": "token-only-claim-erc721-superfluid",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "hardhat": "^2.13.0"
+  },
+  "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.2",
+    "@superfluid-finance/ethereum-contracts": "^1.5.2",
+    "daisyui": "^2.51.5",
+    "dotenv": "^16.0.3",
+    "react-router-dom": "^6.10.0"
+  }
+}
