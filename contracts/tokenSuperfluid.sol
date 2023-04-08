@@ -13,6 +13,7 @@ contract StreamClaimable {
     IERC721 public nftContract;
     uint256 public totalClaims;
     uint256 public timesClaimed;
+    address[] public claimedAddresses;
     mapping(address => bool) public hasClaimed;
 
     constructor(
@@ -45,12 +46,41 @@ contract StreamClaimable {
         }
     }
 
+    function getContractDetails()
+        external
+        view
+        returns (
+            address _nftContract,
+            address _token,
+            int96 _flowRate,
+            uint256 _totalClaims,
+            uint256 _timesClaimed
+        )
+    {
+        return (
+            address(nftContract),
+            address(token),
+            flowRate,
+            totalClaims,
+            timesClaimed
+        );
+    }
+
     function claimStream() public {
         bool status = checkHoldings(msg.sender);
         if (status) {
             token.createFlow(msg.sender, flowRate);
             timesClaimed++;
             hasClaimed[msg.sender] = true;
+            claimedAddresses.push(msg.sender);
         }
+    }
+
+    function getClaimedAddresses() public view returns (address[] memory) {
+        return claimedAddresses;
+    }
+
+    function hasUserClaimed(address _user) public view returns (bool) {
+        return hasClaimed[_user];
     }
 }

@@ -2,7 +2,29 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   daisyui: {
-    themes: ["lemonade"],
+    themes: [
+      {
+        mytheme: {
+          primary: "#8be572",
+
+          secondary: "#e86229",
+
+          accent: "#f230d1",
+
+          neutral: "#2A2438",
+
+          "base-100": "#FFFFFF",
+
+          info: "#4FA3EE",
+
+          success: "#3FD5BC",
+
+          warning: "#BC7E0B",
+
+          error: "#F10E12",
+        },
+      },
+    ],
   },
   theme: {
     theme: {
