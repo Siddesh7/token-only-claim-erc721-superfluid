@@ -9,6 +9,7 @@ import { claimer } from "../../artifacts";
 import Navbar from "../../components/Navbar";
 import { ethers } from "ethers";
 import { calculateAmountFromFlowRate, getTokenName } from "../../../utilities";
+import SuccessPage from "../../components/Success";
 
 export default function Claim() {
   const { id } = useParams();
@@ -24,7 +25,6 @@ export default function Claim() {
     functionName: "hasUserClaimed",
     args: [address],
   });
-  console.log(hasClaimed);
 
   const { config } = usePrepareContractWrite({
     address: id,
@@ -141,6 +141,7 @@ export default function Claim() {
           )}
         </div>
       </div>
+      {isSuccess && <SuccessPage page="/" />}
     </>
   );
 }

@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -13,7 +13,10 @@
     "ethers": "^5.7.2",
     "react": "^18.2.0",
     "react-canvas-confetti": "^1.4.0",
+    "react-confetti": "^6.1.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.10.0",
+    "react-use": "^17.4.0",
     "wagmi": "^0.12.9"
   },
   "devDependencies": {

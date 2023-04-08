@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import bg from "../assets/bg.png";
 import { deployer } from "../artifacts";
 import { erc20ABI, useContractWrite, usePrepareContractWrite } from "wagmi";
 import Navbar from "./Navbar";
 import { useDebounce } from "../../utilities";
+import SuccessPage from "./Success";
 function Hero() {
   const [formData, setFormData] = useState({
     contract: "",
@@ -11,6 +12,7 @@ function Hero() {
     claimAmount: null,
     totalClaims: null,
   });
+
   const [totalValue, setTotalValue] = useState(null);
   const [approved, setApproved] = useState(false);
   const handleInputChange = (event) => {
@@ -36,7 +38,7 @@ function Hero() {
     ],
     enabled: Boolean(debounced),
   });
-  const { write } = useContractWrite(config);
+  const { writeAsync, isSuccess } = useContractWrite(config);
   const { config: approve } = usePrepareContractWrite({
     address: formData.token,
     abi: erc20ABI,
@@ -49,16 +51,16 @@ function Hero() {
   const { write: approveTx, isSuccess: approveSuccess } =
     useContractWrite(approve);
 
-  function delay() {
+  function delay(time) {
     setTimeout(() => {
       setApproved(true);
-    }, 20000);
+    }, time);
   }
 
   return (
     <div className="w-[95%] m-auto">
       {" "}
-      <div>
+      <div className="hidden md:block">
         <Navbar />
         <div className="card w-1/2 bg-base-100 shadow-xl image-full m-auto mt-[40px]">
           <figure>
@@ -132,19 +134,27 @@ function Hero() {
                   className="btn"
                   onClick={() => {
                     approveTx();
-                    delay();
+                    delay(20000);
                   }}
                 >
                   Approve{" "}
                 </button>
               ) : (
-                <button className="btn" onClick={write}>
+                <button className="btn" onClick={writeAsync}>
                   {approved ? "Create" : "Loading...."}
                 </button>
               )}
             </div>
           </label>
         </label>
+      </div>
+      {isSuccess && (
+        <div className="hidden md:block">
+          <SuccessPage page={"/claim"} />
+        </div>
+      )}
+      <div className="md:hidden flex justify-center my-[50%]">
+        <h2>This site is not optimised for Mobile</h2>
       </div>
     </div>
   );

@@ -17,9 +17,9 @@ export default function ClaimHome() {
       {data && (
         <div>
           <p className="text-bold text-[25px] ">Claims Created</p>
-          <div className="my-[20px] flex gap-4">
+          <div className="my-[20px] flex flex-row flex-wrap justify-between gap-4">
             {data.map((item, index) => (
-              <div className="card w-96 bg-gray-200 shadow-xl">
+              <div className="card w-[22%] bg-gray-200 shadow-xl my-[20px]">
                 <div className="card-body">
                   <h2 className="card-title">Claim {`#${index + 1}`}</h2>
 
