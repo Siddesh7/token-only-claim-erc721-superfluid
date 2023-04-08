@@ -7,9 +7,13 @@ import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { polygonMumbai } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
+import { alchemyProvider } from "wagmi/providers/alchemy";
 const { chains, provider } = configureChains(
   [polygonMumbai],
-  [publicProvider()]
+  [
+    alchemyProvider({ apiKey: "VjeBfMHzs7JlWsMMYVjIdK-Zcwx0QDV8" }),
+    publicProvider(),
+  ]
 );
 const { connectors } = getDefaultWallets({
   appName: "Stream CLaim",
