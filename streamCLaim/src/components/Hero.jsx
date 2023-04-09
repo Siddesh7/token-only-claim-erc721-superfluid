@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import bg from "../assets/bg.png";
 import { deployer } from "../artifacts";
 import { erc20ABI, useContractWrite, usePrepareContractWrite } from "wagmi";
-import Navbar from "./Navbar";
+
 import { useDebounce } from "../../utilities";
 import SuccessPage from "./Success";
+
+import { useLocation } from "react-router-dom";
+
 function Hero() {
   const [formData, setFormData] = useState({
     contract: "",
@@ -12,7 +15,10 @@ function Hero() {
     claimAmount: null,
     totalClaims: null,
   });
-
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const modal = Boolean(searchParams.get("modal"));
+  const addressOfNft = searchParams.get("address");
   const [totalValue, setTotalValue] = useState(null);
   const [approved, setApproved] = useState(false);
   const handleInputChange = (event) => {
@@ -56,36 +62,57 @@ function Hero() {
       setApproved(true);
     }, time);
   }
-
+  useEffect(() => {
+    if (addressOfNft) {
+      setFormData({ ...formData, contract: addressOfNft });
+    }
+  }, [addressOfNft]);
   return (
-    <div className="w-[95%] m-auto">
-      {" "}
-      <div className="hidden md:block">
-        <Navbar />
-        <div className="card w-1/2 bg-base-100 shadow-xl image-full m-auto mt-[40px]">
-          <figure>
-            <img src={bg} alt="bg" />
-          </figure>
-          <div className="card-body flex mt-[10%]">
-            <h2 className=" text-white text-3xl">Create a claim??</h2>
-            <p className="text-gray-300 text-[16px]">
-              Fill this form and get a shareable link!!
-            </p>
-            <div className="card-actions justify-end">
-              <label htmlFor="my-modal-4" className="btn btn-accent">
-                Create Claim
-              </label>{" "}
-            </div>
+    <>
+      <div className="card w-[24%] bg-gray-100 shadow-xl h-[500px]">
+        <figure className="px-10 pt-10" style={{ height: "50%" }}>
+          <div
+            style={{
+              backgroundImage: `url(${bg})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center center",
+              height: "100%",
+              width: "100%",
+              borderRadius: "20px",
+            }}
+          ></div>
+        </figure>
+
+        <div
+          className="card-body items-center text-center"
+          style={{ height: "30%" }}
+        >
+          <h2 className="card-title">Create a new claim!</h2>
+          <p>
+            Cannot find the nft? Create it using the nft address! <br /> Fill
+            this form and get a shareable link!!
+          </p>
+          <div className="card-actions w-full">
+            <label htmlFor="my-modal-3" className="btn btn-accent w-full">
+              Create Claim
+            </label>{" "}
           </div>
         </div>
-
-        <input type="checkbox" id="my-modal-4" className="modal-toggle" />
-        <label htmlFor="my-modal-4" className="modal cursor-pointer">
-          <label className="modal-box relative" htmlFor="">
-            <h3 className="text-lg font-bold my-[10px]">
-              Fill the details to get started
-            </h3>
-            <div className="flex flex-col gap-4">
+      </div>
+      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <div className="modal">
+        <div className="modal-box relative">
+          <label
+            htmlFor="my-modal-3"
+            className="btn btn-sm btn-circle absolute right-2 top-2"
+          >
+            ✕
+          </label>
+          <h3 className="text-lg font-bold mb-[20px]">
+            You're about to create a new claim!
+          </h3>
+          <div className="flex flex-col gap-4">
+            {!addressOfNft && (
               <input
                 type="text"
                 placeholder="NFT Contract that is eligible for claim"
@@ -93,60 +120,61 @@ function Hero() {
                 name="contract"
                 value={formData.contract}
                 onChange={handleInputChange}
+                disabled={addressOfNft && true}
               />
+            )}
 
-              <select
-                className="select select-primary w-full"
-                onChange={handleInputChange}
-                name="token"
+            <select
+              className="select select-primary w-full"
+              onChange={handleInputChange}
+              name="token"
+            >
+              <option disabled selected>
+                Token that you're depositing for claim
+              </option>
+              <option value={"0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f"}>
+                fDAIx
+              </option>
+              <option value={"0x918E0d5C96cAC79674E2D38066651212be3C9C48"}>
+                fTUSDx
+              </option>
+              <option value={"0x42bb40bF79730451B11f6De1CbA222F17b87Afd7"}>
+                fUSDCx
+              </option>
+            </select>
+            <input
+              type="number"
+              placeholder="Claim Amount"
+              className="input input-bordered input-primary w-full"
+              name="claimAmount"
+              value={formData.claimAmount}
+              onChange={handleInputChange}
+            />
+            <input
+              type="number"
+              placeholder="Total claims"
+              className="input input-bordered input-primary w-full"
+              name="totalClaims"
+              value={formData.totalClaims}
+              onChange={handleInputChange}
+            />
+            {!approveSuccess ? (
+              <button
+                className="btn"
+                onClick={() => {
+                  approveTx();
+                  delay(20000);
+                }}
               >
-                <option disabled selected>
-                  Token that you're depositing for claim
-                </option>
-                <option value={"0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f"}>
-                  fDAIx
-                </option>
-                <option value={"0x918E0d5C96cAC79674E2D38066651212be3C9C48"}>
-                  fTUSDx
-                </option>
-                <option value={"0x42bb40bF79730451B11f6De1CbA222F17b87Afd7"}>
-                  fUSDCx
-                </option>
-              </select>
-              <input
-                type="number"
-                placeholder="Claim Amount"
-                className="input input-bordered input-primary w-full"
-                name="claimAmount"
-                value={formData.claimAmount}
-                onChange={handleInputChange}
-              />
-              <input
-                type="number"
-                placeholder="Total claims"
-                className="input input-bordered input-primary w-full"
-                name="totalClaims"
-                value={formData.totalClaims}
-                onChange={handleInputChange}
-              />
-              {!approveSuccess ? (
-                <button
-                  className="btn"
-                  onClick={() => {
-                    approveTx();
-                    delay(20000);
-                  }}
-                >
-                  Approve{" "}
-                </button>
-              ) : (
-                <button className="btn" onClick={writeAsync}>
-                  {approved ? "Create" : "Loading...."}
-                </button>
-              )}
-            </div>
-          </label>
-        </label>
+                Approve{" "}
+              </button>
+            ) : (
+              <button className="btn" onClick={writeAsync}>
+                {approved ? "Create" : "Loading...."}
+              </button>
+            )}
+          </div>{" "}
+        </div>
       </div>
       {isSuccess && (
         <div className="hidden md:block">
@@ -156,7 +184,7 @@ function Hero() {
       <div className="md:hidden flex justify-center my-[50%]">
         <h2>This site is not optimised for Mobile</h2>
       </div>
-    </div>
+    </>
   );
 }
 
