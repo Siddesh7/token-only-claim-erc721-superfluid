@@ -17,10 +17,11 @@ function Hero() {
   });
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const modal = Boolean(searchParams.get("modal"));
+  let modal = Boolean(searchParams.get("modal"));
   const addressOfNft = searchParams.get("address");
   const [totalValue, setTotalValue] = useState(null);
   const [approved, setApproved] = useState(false);
+  const [closeModal, setCloseModal] = useState(false);
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name == "totalClaims") {
@@ -62,6 +63,9 @@ function Hero() {
       setApproved(true);
     }, time);
   }
+  function closeModalHandler() {
+    setCloseModal(true);
+  }
   useEffect(() => {
     if (addressOfNft) {
       setFormData({ ...formData, contract: addressOfNft });
@@ -100,11 +104,12 @@ function Hero() {
         </div>
       </div>
       <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <div className="modal">
+      <div className={`modal ${modal && !closeModal && `modal-open`}`}>
         <div className="modal-box relative">
           <label
             htmlFor="my-modal-3"
             className="btn btn-sm btn-circle absolute right-2 top-2"
+            onClick={closeModalHandler}
           >
             ✕
           </label>

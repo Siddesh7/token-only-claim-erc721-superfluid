@@ -1,6 +1,10 @@
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Navbar from "./Navbar";
+import { useState } from "react";
+import { useAccount } from "wagmi";
 
 export default function Landing() {
+  const { address } = useAccount();
   return (
     <div className="w-[95%] m-auto">
       <Navbar />
@@ -12,9 +16,16 @@ export default function Landing() {
               Create a claim for your fav NFT community or claim one with your
               nft!
             </p>
-            <a className="btn btn-primary" href={"#nft"}>
-              Get Started
-            </a>
+
+            {address ? (
+              <a className="btn btn-primary" href={"#nft"}>
+                Get Started
+              </a>
+            ) : (
+              <div className="flex justify-center">
+                <ConnectButton />
+              </div>
+            )}
           </div>
         </div>
       </div>

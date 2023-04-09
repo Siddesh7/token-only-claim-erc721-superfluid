@@ -21,7 +21,7 @@ export default function NftContainer({ name, desc, address, image }) {
         <p>{desc}</p>
         <div className="card-actions w-full">
           <a href={`/?modal=true&address=${address}`} className="btn w-full">
-            View
+            Create a claim for this collection
           </a>
         </div>
       </div>

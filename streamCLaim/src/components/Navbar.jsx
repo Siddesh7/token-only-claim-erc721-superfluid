@@ -8,7 +8,7 @@ export default function Navbar() {
           href="/"
           className="animate-text bg-gradient-to-r from-teal-500 via-purple-500 to-orange-500 bg-clip-text text-transparent text-4xl font-black"
         >
-          Stream Claim
+          xStream Claim
         </a>
       </div>
       <div className="flex-none">
