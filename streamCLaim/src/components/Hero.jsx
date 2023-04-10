@@ -73,7 +73,7 @@ function Hero() {
   }, [addressOfNft]);
   return (
     <>
-      <div className="card w-[24%] bg-gray-100 shadow-xl h-[500px]">
+      <div className="card bg-gray-100 shadow-xl h-[500px]">
         <figure className="px-10 pt-10" style={{ height: "50%" }}>
           <div
             style={{

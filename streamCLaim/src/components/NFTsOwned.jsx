@@ -69,7 +69,7 @@ export default function NftsOwned() {
       <h2 className="text-3xl font-black my-[20px]">
         NFTs Collection that you own!
       </h2>{" "}
-      <div id="nft" className="flex flex-row justify-between flex-wrap gap-4">
+      <div id="nft" className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <Hero />
         {!loading &&
           data.length > 0 &&

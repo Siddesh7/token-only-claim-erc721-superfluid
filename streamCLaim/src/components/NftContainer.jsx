@@ -1,6 +1,6 @@
 export default function NftContainer({ name, desc, address, image }) {
   return (
-    <div className="card w-[24%] h-[500px] bg-base-100 shadow-xl bg-gray-100">
+    <div className="card h-[500px] bg-base-100 shadow-xl bg-gray-100">
       <figure className="px-10 pt-10" style={{ height: "50%" }}>
         <div
           style={{

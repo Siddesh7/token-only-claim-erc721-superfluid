@@ -11,7 +11,7 @@ async function main() {
   const token = "0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f";
   const flowrate = "38580246913580";
 
-  const gasFee = hre.ethers.utils.parseEther("0.01");
+  const gasFee = hre.ethers.utils.parseEther("0.1");
 
   const StreamClaimable = await hre.ethers.getContractFactory("Deployer");
   // const streamClaimable = await StreamClaimable.deploy(
