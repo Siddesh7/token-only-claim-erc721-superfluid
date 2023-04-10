@@ -9,7 +9,7 @@ export default function SuccessPage({ page }) {
       setShouldRedirect(true);
     }, 10000);
   }
-  const host = "http://localhost:5173";
+  const host = "https://claimer.siddesh.xyz";
   useEffect(() => {
     delay();
   }, []);
