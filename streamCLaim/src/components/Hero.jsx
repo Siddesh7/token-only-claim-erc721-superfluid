@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import bg from "../assets/bg.png";
 import { deployer } from "../artifacts";
-import { erc20ABI, useContractWrite, usePrepareContractWrite } from "wagmi";
+import {
+  erc20ABI,
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 
 import { useDebounce } from "../../utilities";
 import SuccessPage from "./Success";
@@ -55,9 +60,19 @@ function Hero() {
       "100000000000000000000000000000000000000000000000",
     ],
   });
-  const { write: approveTx, isSuccess: approveSuccess } =
-    useContractWrite(approve);
+  const {
+    data: approveTXData,
+    write: approveTx,
+    isSuccess: approveSuccess,
+  } = useContractWrite(approve);
 
+  const {
+    data,
+    isSuccess: txsucceeded,
+    isLoading,
+  } = useWaitForTransaction({
+    hash: approveTXData?.hash,
+  });
   function delay(time) {
     setTimeout(() => {
       setApproved(true);
@@ -163,7 +178,7 @@ function Hero() {
               value={formData.totalClaims}
               onChange={handleInputChange}
             />
-            {!approveSuccess ? (
+            {!txsucceeded ? (
               <button
                 className="btn"
                 onClick={() => {
@@ -171,7 +186,7 @@ function Hero() {
                   delay(20000);
                 }}
               >
-                Approve{" "}
+                {!isLoading ? "Approve" : "Loading..."}
               </button>
             ) : (
               <button className="btn" onClick={writeAsync}>
